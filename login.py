@@ -1,12 +1,17 @@
+# login_app.py
 import streamlit as st
 import mysql.connector
-import subprocess
+from dotenv import load_dotenv
 import os
+
+load_dotenv()  # Load environment variables from .env
 
 def connect_to_db():
     return mysql.connector.connect(
-        host="localhost", user="root", password="root",
-        database="Farming_Intelligence"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
 
 def signup(username, password):
@@ -41,7 +46,6 @@ def main():
     st.set_page_config(page_title="Login - AI Helper for Farmers")
     st.title("🌿 AI Helper for Farmers - Authentication")
 
-    # Store login status in session
     if "logged_in" not in st.session_state:
         st.session_state.logged_in = False
 
@@ -66,16 +70,10 @@ def main():
         if st.button("Signup"):
             signup(signup_user, signup_pass)
 
-    # If logged in, redirect to the Streamlit app (simulate Tkinter's subprocess.run)
     if st.session_state.logged_in:
         st.success("Redirecting to main app...")
-        # You can either import and call the main app here:
-        import streamlit_app
+        import streamlit_app  # Make sure this exists!
         streamlit_app.main()
-
-        # OR use subprocess if it's a separate file
-        # subprocess.run(["streamlit", "run", "streamlit_app.py"])
-        # st.stop()  # prevent running anything else
 
 if __name__ == "__main__":
     main()
