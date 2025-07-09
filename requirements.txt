@@ -1,0 +1,7 @@
+streamlit
+mysql-connector-python
+torch
+torchvision
+Pillow
+numpy
+speechrecognition
